@@ -22,9 +22,10 @@ export default function App() {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
   const { data, isLoading, isError, isSuccess } = useQuery({
-    queryKey: ["pages", currentPage, query],
+    queryKey: ["movies", query, currentPage],
     queryFn: () => fetchMovies(query, currentPage),
     enabled: query.length > 0,
+    placeholderData: (previousData) => previousData,
   });
 
   const totalPages = data?.total_pages ?? 0;
@@ -71,7 +72,6 @@ export default function App() {
 
       {isLoading && <Loader />}
       {isError && <ErrorMessage />}
-      {isSuccess && movies.length === 0}
 
       {!isLoading && !isError && movies.length > 0 && (
         <>
